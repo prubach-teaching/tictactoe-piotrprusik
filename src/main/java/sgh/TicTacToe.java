@@ -19,7 +19,7 @@ public class TicTacToe {
         int totalRow = 3;
         int totalColumn = 5;
         char[][] GameBoard = new char[totalRow][totalColumn];
-        String data = readFileAsString("https://github.com/prubach-teaching/tictactoe-piotrprusik/blob/master/boards/tick1.csv");
+        String data = readFileAsString("main/resources/board/tick1.csv");
         Scanner scanner = new Scanner (data);
 
         for (int row = 0; scanner.hasNextLine() && row < totalRow; row++)
