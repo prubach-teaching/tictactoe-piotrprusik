@@ -85,7 +85,7 @@ public class TicTacToe {
                     }
                 }
             }
-
+        
         return Result.NO_WINNER;
     }
     
