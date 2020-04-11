@@ -77,13 +77,14 @@ public class TicTacToe {
 
             //check for empty spaces
             for (int m = 0; m < totalRow; m++) {
-               for (int n = 0; n < totalColumn; n++) {
+                
+                for (int n = 0; n < totalColumn; n++) {
 
-                   if (GameBoard[m][n] != 1 && GameBoard[m][n] != 100 && GameBoard[m][n] != 0) {
-                       return Result.NOT_FINISHED;
-                   }
-               }
-           }
+                    if (GameBoard[m][n] != 1 && GameBoard[m][n] != 100 && GameBoard[m][n] != 0) {
+                        return Result.NOT_FINISHED;
+                    }
+                }
+            }
 
         return Result.NO_WINNER;
     }
