@@ -1,185 +1,95 @@
 package sgh;
-import java.nio.File.*;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class TicTacToe {
 
-    public static String readFileAsString(String fileName) throws Exception
-    {
-        String data = "";
-        data = new String(Files.readAllBytes(Paths.get(fileName)));
-        return data;
+    public enum Result { NOT_FINISHED, NO_WINNER, X_WON, O_WON }
+
+    public static Result checkBoard(String boardFileName) throws FileNotFoundException {
+        File boardFile = new File(boardFileName);
+        System.out.println(boardFile.getAbsolutePath());
+
+        Scanner scanner = new Scanner(boardFile);
+
+//            char o = 'o';
+//            char x = 'x';
+            int totalRow = 3;
+            int totalColumn = 5;
+            char[][] GameBoard = new char[totalRow][totalColumn];
+
+
+            for (int row = 0; scanner.hasNextLine() && row < totalRow; row++) {
+                char[] chars = scanner.nextLine().toCharArray();
+                for (int i = 0; i < totalColumn && i < chars.length; i++) {
+                    GameBoard[row][i] = chars[i];
+                }
+            }
+
+            for (int m = 0; m < totalRow; m++) {
+                for (int n = 0; n < totalColumn; n++) {
+                    if (GameBoard[m][n] == 'x') {
+                        GameBoard[m][n] = 1;
+                    }
+                    else if (GameBoard[m][n] == 'o') {
+                            GameBoard[m][n] = 100;
+                    }
+                    else GameBoard[m][n] = 0;
+                }
+
+            }
+
+            //check rows for winning
+            for (int m=0; m<totalRow; m++) {
+                if ((GameBoard[m][0] + GameBoard[m][2] + GameBoard[m][4]) == 3) {
+                    return Result.X_WON;
+                }
+                else if ((GameBoard[m][0] + GameBoard[m][2] + GameBoard[m][4]) == 300) {
+                    return Result.O_WON;
+                }
+            }
+
+            //check columns for winning
+            for (int n=0; n<totalColumn; n++) {
+                if ((GameBoard[0][n] + GameBoard[1][n] + GameBoard[2][n]) == 3) {
+                    return Result.X_WON;
+                }
+                else if ((GameBoard[0][n] + GameBoard[1][n] + GameBoard[2][n]) == 300) {
+                    return Result.O_WON;
+                }
+            }
+
+            //check 1st diagonal for winning
+            if ((GameBoard[0][0] + GameBoard[1][2] + GameBoard[2][4]) == 3) {
+                return Result.X_WON;
+            } else if ((GameBoard[0][0] + GameBoard[1][2] + GameBoard[2][4]) == 300) {
+                return Result.O_WON;
+            }
+
+            //check 2nd diagonal for winning
+            if ((GameBoard[0][4] + GameBoard[1][2] + GameBoard[2][0]) == 3) {
+                return Result.X_WON;
+            } else if ((GameBoard[0][4] + GameBoard[1][2] + GameBoard[2][0]) == 300) {
+                return Result.O_WON;
+            }
+
+            //check for empty spaces
+            for (int m = 0; m < totalRow; m++) {
+                for (int n = 0; n < totalColumn; n++) {
+                    if (GameBoard[m][n] != 1 && GameBoard[m][n] != 100 && GameBoard[m][n] != 0) {
+                        return Result.NOT_FINISHED;
+                    }
+                }
+            }
+
+        return Result.NO_WINNER;
     }
 
-    public static void main(String[] args) throws Exception
-    {
-        char o = 'o';
-        char x = 'x';
-        int totalRow = 3;
-        int totalColumn = 5;
-        char[][] GameBoard = new char[totalRow][totalColumn];
-        String data = readFileAsString("main/resources/board/");
-        Scanner scanner = new Scanner (data);
 
-        for (int row = 0; scanner.hasNextLine() && row < totalRow; row++)
-        {
-            char[] chars = scanner.nextLine().toCharArray();
-            for (int i = 0; i < totalColumn && i < chars.length; i++) {
-                GameBoard[row][i] = chars[i];
-            }
-        }
-        int matchx = 0;
-        int matcho = 0;
-        int matchempty = 0;
-        int xwon = 0;
-        int owon = 0;
-        int empty = 0;
-
-        // checking rows
-        for (int m=0; m<3; m++)
-        {
-
-            for (int n = 0; n < 5; n++) {
-                if (GameBoard[m][n] == x) {
-                    matchx++;
-                }
-                if (GameBoard[m][n] == o) {
-                    matcho++;
-                }
-                if (GameBoard[m][n] == ' ') {
-                    matchempty++;
-                }
-            }
-
-
-                if (matchx == 3) {
-                    xwon++;
-                    System.out.println("X_WON");
-                } else if (matcho == 3) {
-                    owon++;
-                    System.out.println("O_WON");
-                } else if (matchempty == 1) {
-                    empty++;
-                    System.out.println("NOT_FINISHED");
-                }
-                if (xwon == 1 || owon == 1 || empty == 1) {
-                    break;
-                }
-                if (xwon != 1 || owon !=1) {
-                    matchx = 0;
-                    matcho = 0;
-                }
-                if (xwon != 1) {
-                    xwon = 0;
-                }
-                if (owon != 1) {
-                    owon = 0;
-                }
-        }
-
-        //checking columns
-        for (int n=0; n<5; n++)
-        {
-
-            for (int m = 0; m < 3; m++) {
-                if (GameBoard[m][n] == x) {
-                    matchx++;
-                }
-                if (GameBoard[m][n] == o) {
-                    matcho++;
-                }
-                if (GameBoard[m][n] == ' ') {
-                    matchempty++;
-                }
-            }
-
-
-            if (matchx == 3) {
-                xwon++;
-                System.out.println("X_WON");
-            } else if (matcho == 3) {
-                owon++;
-                System.out.println("O_WON");
-            } else if (matchempty == 1) {
-                empty++;
-                System.out.println("NOT_FINISHED");
-            }
-            if (xwon == 1 || owon == 1 || empty == 1) {
-                break;
-            }
-            if (xwon != 1 || owon !=1)
-            {
-                matchx = 0;
-                matcho = 0;
-
-            }
-            if (xwon != 1) {
-                xwon = 0;
-            }
-            if (owon != 1) {
-                owon = 0;
-            }
-        }
-
-            // checking 1st diagonal
-        if (GameBoard[0][0] == x && GameBoard[1][2] == x && GameBoard[2][4] == x) {
-            xwon++;
-            System.out.println("X_WON");
-        }
-        if ((GameBoard[0][0] == o && GameBoard[1][2] == o && GameBoard[2][4] == o)) {
-            owon++;
-            System.out.println("O_WON");
-        }
-        if (GameBoard[0][0] == ' ' || GameBoard[1][2] == ' ' || GameBoard[2][4] == ' ') {
-            empty++;
-            System.out.println("NOT_FINISHED");
-        }
-        if (xwon != 1) {
-            xwon = 0;
-        }
-        if (owon != 1) {
-            owon = 0;
-        }
-
-           // checking 2nd diagonal
-        if (GameBoard[0][4] == x && GameBoard[1][2] == x && GameBoard[2][0] == x) {
-            xwon++;
-            System.out.println("X_WON");
-        }
-        if ((GameBoard[0][4] == o && GameBoard[1][2] == o && GameBoard[2][0] == o)) {
-            owon++;
-            System.out.println("O_WON");
-        }
-        if (GameBoard[0][4] == ' ' || GameBoard[1][2] == ' ' || GameBoard[2][0] == ' ') {
-            empty++;
-            System.out.println("NOT_FINISHED");
-        }
-        if (xwon != 1) {
-            xwon = 0;
-        }
-        if (owon != 1) {
-            owon = 0;
-        }
-
-            // checking if draw
-        if (xwon != 1 && owon != 1 && empty == 0) {
-            System.out.println("NO_WINNER");
-        }
-//     public enum Result { NOT_FINISHED, NO_WINNER, X_WON, O_WON }
-
-//     public static Result checkBoard(String boardFileName) {
-//         File boardFile = new File(boardFileName);
-//         System.out.println(boardFile.getAbsolutePath());
-
-//         // Your code here
-
-//         return Result.NO_WINNER;
-//     }
-
-
-//     public static void main(String[] args) {
-//         Result res = checkBoard("boards/tick0.csv");
-//         System.out.println(res);
-//     }
-// }
+    public static void main(String[] args) throws FileNotFoundException {
+        Result res = checkBoard("boards/tick0.csv");
+        System.out.println(res);
+    }
+}
