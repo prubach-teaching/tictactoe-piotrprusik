@@ -14,8 +14,6 @@ public class TicTacToe {
 
         Scanner scanner = new Scanner(boardFile);
 
-//            char o = 'o';
-//            char x = 'x';
             int totalRow = 3;
             int totalColumn = 5;
             char[][] GameBoard = new char[totalRow][totalColumn];
@@ -36,7 +34,9 @@ public class TicTacToe {
                     else if (GameBoard[m][n] == 'o') {
                             GameBoard[m][n] = 100;
                     }
-                    else GameBoard[m][n] = 0;
+                    else if (GameBoard[m][n] == ';') {
+                        GameBoard[m][n] = 0;
+                    }
                 }
 
             }
@@ -86,7 +86,6 @@ public class TicTacToe {
 
         return Result.NO_WINNER;
     }
-
 
     public static void main(String[] args) throws FileNotFoundException {
         Result res = checkBoard("boards/tick0.csv");
